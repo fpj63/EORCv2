@@ -5,14 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paroisse Orthodoxe Saint-Nicolas - Clermont-Ferrand</title>
     
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
+    <!-- Configuration Tailwind -->
     <script>
       tailwind.config = {
         theme: {
@@ -20,12 +24,17 @@
             colors: {
               'ortho-red': '#8a1c1c',
               'ortho-gold': '#d4af37',
-              'ortho-bg': '#e7e5e4',
+              'ortho-bg': '#e7e5e4', /* Stone 200 */
               'ortho-text': '#1c1917',
             },
             fontFamily: {
               serif: ['Merriweather', 'serif'],
               sans: ['Inter', 'sans-serif'],
+            },
+            boxShadow: {
+              'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+              'strong': '0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1)',
+              'glow': '0 0 15px rgba(212, 175, 55, 0.3)',
             }
           }
         }
@@ -33,129 +42,758 @@
     </script>
 
     <style>
-      .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
-      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-      .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-      .custom-scrollbar::-webkit-scrollbar-thumb { background: #d4af37; }
+      /* Styles personnalisés */
+      body {
+        background-attachment: fixed; /* Le dégradé reste fixe */
+      }
+      ::-webkit-scrollbar { width: 8px; }
+      ::-webkit-scrollbar-track { background: #e7e5e4; }
+      ::-webkit-scrollbar-thumb { background: #a8a29e; border-radius: 4px; }
+      ::-webkit-scrollbar-thumb:hover { background: #8a1c1c; }
+      
+      .animate-fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
     </style>
+<script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
 </head>
-<body class="bg-stone-100 min-h-screen font-sans text-ortho-text flex flex-col md:flex-row">
+<body class="bg-gradient-to-br from-stone-100 via-stone-200 to-stone-300 min-h-screen font-sans text-ortho-text selection:bg-ortho-red selection:text-white flex flex-col md:flex-row">
 
-    <div class="md:hidden fixed top-0 left-0 right-0 h-16 bg-stone-800 text-white shadow-md z-50 flex items-center justify-between px-4">
-        <span class="font-serif font-bold text-sm">Paroisse Saint-Nicolas</span>
-        <button onclick="toggleMobileMenu()" class="p-2 bg-stone-700 rounded-lg">
+    <!-- Mobile Header -->
+    <div class="md:hidden fixed top-0 left-0 right-0 h-16 bg-stone-500 text-white shadow-md z-50 flex items-center justify-between px-4 border-b border-stone-400">
+        <span class="font-serif font-bold text-sm truncate max-w-[200px]" id="mobile-title">Paroisse Saint-Nicolas</span>
+        <button onclick="toggleMobileMenu()" class="p-2 text-stone-100 hover:bg-stone-400 rounded-full transition-colors">
             <i data-lucide="menu"></i>
         </button>
     </div>
 
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 bg-stone-800 text-white transform -translate-x-full md:translate-x-0 md:sticky md:top-0 md:h-screen transition-transform duration-300 flex flex-col">
-        <div class="p-6 text-center border-b border-stone-700">
-            <div class="w-20 h-20 mx-auto mb-4 rounded-full border-2 border-ortho-gold flex items-center justify-center bg-stone-700">
-               <i data-lucide="church" class="w-10 h-10 text-ortho-gold"></i>
+    <!-- Sidebar (Menu Gauche) -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-72 bg-stone-500 text-white shadow-strong border-r border-stone-400 transform -translate-x-full md:translate-x-0 md:sticky md:top-0 md:h-screen transition-transform duration-300 ease-in-out shrink-0 mt-16 md:mt-0 flex flex-col">
+        
+        <!-- Logo Header -->
+        <div class="p-8 text-center hidden md:block border-b border-stone-400 bg-stone-500">
+            <div class="w-28 h-28 mx-auto mb-6 rounded-full overflow-hidden border-4 border-ortho-gold shadow-glow flex items-center justify-center bg-stone-400 text-white">
+               <i data-lucide="church" class="w-12 h-12"></i>
             </div>
-            <h1 class="font-serif font-bold text-sm uppercase tracking-wider" id="sidebar-title">Saint-Nicolas</h1>
+            <h1 class="font-serif font-bold text-lg text-white leading-tight drop-shadow-sm" id="sidebar-title">
+              Paroisse Orthodoxe Saint-Nicolas
+            </h1>
+            <p class="text-[10px] text-stone-200 mt-2 uppercase tracking-[0.25em] font-semibold">Clermont-Ferrand</p>
         </div>
 
-        <nav class="flex-1 py-4 px-3 space-y-1 overflow-y-auto custom-scrollbar" id="nav-container">
-            </nav>
+        <!-- Navigation -->
+        <nav class="flex-1 py-6 px-4 space-y-2 bg-stone-500 overflow-y-auto custom-scrollbar" id="nav-container">
+            <!-- Items injectés par JS -->
+        </nav>
+
+        <!-- Footer Sidebar -->
+        <div class="p-6 bg-stone-500 border-t border-stone-400">
+             <div class="text-xs text-stone-200 text-center font-medium">
+              <!-- Copyright removed as requested -->
+             </div>
+        </div>
     </aside>
 
-    <div id="mobile-overlay" onclick="toggleMobileMenu()" class="fixed inset-0 bg-black/50 z-30 hidden"></div>
+    <!-- Overlay Mobile -->
+    <div id="mobile-overlay" onclick="toggleMobileMenu()" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 hidden md:hidden"></div>
 
-    <main class="flex-1 flex flex-col min-w-0">
-        <header class="sticky top-0 z-20 bg-white/80 backdrop-blur-md border-b flex justify-end items-center px-4 h-16 shadow-sm">
-            <div class="flex gap-2">
-                <button onclick="setLanguage('fr')" class="px-2 py-1 border rounded text-xs font-bold" id="btn-fr">FR</button>
-                <button onclick="setLanguage('ro')" class="px-2 py-1 border rounded text-xs font-bold" id="btn-ro">RO</button>
-                <button onclick="setLanguage('ka')" class="px-2 py-1 border rounded text-xs font-bold" id="btn-ka">KA</button>
-            </div>
+    <!-- Contenu Principal -->
+    <main class="flex-1 flex flex-col min-w-0 transition-all duration-300 mt-16 md:mt-0 md:ml-0">
+        
+        <!-- Barre de langue (Sticky) -->
+        <header class="sticky top-0 z-30 bg-stone-100/90 backdrop-blur-lg border-b border-stone-200 flex justify-end items-center px-4 md:px-8 h-16 shadow-sm">
+           <div class="flex gap-2">
+               <button onclick="setLanguage('fr')" class="lang-btn flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-bold border border-stone-300 transition-all duration-300 shadow-sm" data-lang="fr">
+                   <span class="text-lg">🇫🇷</span> <span class="hidden sm:inline">Français</span>
+               </button>
+               <button onclick="setLanguage('ro')" class="lang-btn flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-bold border border-stone-300 transition-all duration-300 shadow-sm" data-lang="ro">
+                   <span class="text-lg">🇷🇴</span> <span class="hidden sm:inline">Română</span>
+               </button>
+               <button onclick="setLanguage('ka')" class="lang-btn flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-bold border border-stone-300 transition-all duration-300 shadow-sm" data-lang="ka">
+                   <span class="text-lg">🇬🇪</span> <span class="hidden sm:inline">ქართული</span>
+               </button>
+           </div>
         </header>
 
-        <div id="main-content" class="flex-1 p-4 md:p-8 max-w-5xl mx-auto w-full">
-            </div>
+        <!-- Zone de contenu dynamique -->
+        <div id="main-content" class="flex-1 p-4 md:p-10 max-w-7xl mx-auto w-full">
+            <!-- Le contenu sera injecté ici par JS -->
+        </div>
+
     </main>
 
+    <!-- JAVASCRIPT LOGIC -->
     <script>
+        // --- DONNÉES & TRADUCTIONS ---
+        
         const DATA = {
             fr: {
-                title: "Paroisse Saint-Nicolas",
-                nav: { home: "Accueil", presentation: "Présentation", contact: "Contact" },
-                home: { title: "Bienvenue", text: "Bienvenue à l'église de Clermont-Ferrand." },
-                contact: { title: "Contact", address: "43 rue Sainte Claire, 63000 Clermont Ferrand" }
+                title: "Paroisse Orthodoxe Saint-Nicolas",
+                nav: {
+                    home: "Accueil",
+                    presentation: "Présentation",
+                    biserica: "L'Église",
+                    ortodoxia: "Orthodoxie",
+                    clergy: "Clergé",
+                    parish_life: "Vie Paroissiale",
+                    calendar: "Calendrier & Agenda",
+                    gallery: "Galerie",
+                    contact: "Contact & Accès"
+                },
+                home: {
+                    hero_title: "ÉGLISE ORTHODOXE DE CLERMONT (EORC)",
+                    peace: "Paix à tous",
+                    welcome_title: "Bienvenue",
+                    welcome_text: "Bienvenue sur le site de la Paroisse Orthodoxe de Clermont-Ferrand, sous la juridiction de la Métropole Orthodoxe Roumaine d'Europe Occidentale et Méridionale.",
+                    schedule_title: "Horaires",
+                    schedule_text: "Retrouvez les dates et heures des prochaines liturgies et vêpres.",
+                    schedule_btn: "Calendrier Complet",
+                    quote: "Dieu est amour.",
+                    quote_ref: "(1 Jean 4:8)"
+                },
+                calendar: {
+                    saints_title: "Saints du jour",
+                    saints_text: "Saint Martyrs Hermès, Aggée et Caïus; Saint martyr Philippe.",
+                    source: "Source : Doxologia.ro",
+                    agenda_title: "Agenda Paroissial",
+                    col_date: "Date",
+                    col_time: "Heure",
+                    col_event: "Événement",
+                    full_calendar_title: "Calendrier Google Complet",
+                    open_new_window: "Ouvrir le calendrier dans une nouvelle fenêtre"
+                },
+                gallery: {
+                    title: "Galerie Photos"
+                },
+                contact: {
+                    title: "Contactez-nous",
+                    coords: "Coordonnées",
+                    contacts_list: "Contacts",
+                    role_priest: "Prêtre"
+                },
+                clergy: {
+                   title: "Nos Prêtres",
+                   role: "Prêtre"
+                },
+                parish: {
+                    title: "Vie de la Paroisse",
+                    subtitle: "Une communauté vivante réunie par la foi et le partage.",
+                    choir: { title: "Chorale", desc: "La chorale accompagne les offices liturgiques dominicaux." },
+                    school: { title: "École du Dimanche", desc: "Catéchisme et activités pour les enfants après la liturgie." },
+                    charity: { title: "Action Caritative", desc: "Aide aux personnes en difficulté et soutien communautaire." }
+                },
+                presentation: {
+                    title: "Présentation de la Paroisse",
+                    link: "Ouvrir dans une nouvelle fenêtre"
+                },
+                biserica: {
+                    title: "L'Église",
+                    p1: "Notre église est une communauté de foi dédiée au culte orthodoxe, témoignant de la tradition vivante des Apôtres. Le bâtiment lui-même est un lieu de rassemblement, de prière et de célébration des saints mystères.",
+                    p2: "L'architecture et l'iconographie de notre paroisse reflètent la théologie orthodoxe : le ciel sur la terre. Chaque détail, de l'iconostase aux fresques, invite les fidèles à entrer dans le Royaume de Dieu."
+                },
+                ortodoxia: {
+                    title: "Orthodoxie",
+                    quote: "« C'est ici la foi des Apôtres, c'est ici la foi des Pères, c'est ici la foi des Orthodoxes, c'est ici la foi qui a affermi l'univers. »",
+                    intro: "L'Église orthodoxe est l'Église fondée par Jésus-Christ et ses apôtres au jour de la Pentecôte. Elle a conservé sans altération la plénitude de la foi chrétienne à travers les siècles.",
+                    spirituality: "Spiritualité",
+                    spirituality_desc: "Une vie de prière liturgique et personnelle, le jeûne, et la recherche de la paix intérieure (hésychasme).",
+                    sacraments: "Sacrements",
+                    sacraments_desc: "La vie en Christ est nourrie par les saints mystères, notamment l'Eucharistie, centre de la vie de l'Église."
+                }
             },
             ro: {
-                title: "Parohia Sfântul Nicolae",
-                nav: { home: "Acasă", presentation: "Prezentare", contact: "Contact" },
-                home: { title: "Bine ați venit", text: "Bine ați venit la biserica din Clermont-Ferrand." },
-                contact: { title: "Contact", address: "43 rue Sainte Claire, 63000 Clermont Ferrand" }
+                title: "Parohia Ortodoxă Sfântul Nicolae",
+                nav: {
+                    home: "Acasă",
+                    presentation: "Prezentare",
+                    biserica: "Biserica",
+                    ortodoxia: "Ortodoxia",
+                    clergy: "Cler",
+                    parish_life: "Viața Parohială",
+                    calendar: "Calendar & Agendă",
+                    gallery: "Galerie",
+                    contact: "Contact & Acces"
+                },
+                home: {
+                    hero_title: "BISERICA ORTODOXĂ DIN CLERMONT (EORC)",
+                    peace: "Pace tuturor",
+                    welcome_title: "Bine ați venit",
+                    welcome_text: "Bine ați venit pe site-ul Parohiei Ortodoxe din Clermont-Ferrand, sub jurisdicția Mitropoliei Ortodoxe Române a Europei Occidentale și Meridionale.",
+                    schedule_title: "Program",
+                    schedule_text: "Găsiți datele și orele următoarelor liturghii și vecernii.",
+                    schedule_btn: "Calendar Complet",
+                    quote: "Dumnezeu este iubire.",
+                    quote_ref: "(1 Ioan 4:8)"
+                },
+                calendar: {
+                    saints_title: "Sfinții zilei",
+                    saints_text: "Sfinții Mucenici Hermes, Agheu și Caius; Sfântul Mucenic Filip.",
+                    source: "Sursă : Doxologia.ro",
+                    agenda_title: "Agenda Parohială",
+                    col_date: "Date",
+                    col_time: "Oră",
+                    col_event: "Eveniment",
+                    full_calendar_title: "Calendar Google Complet",
+                    open_new_window: "Deschideți calendarul într-o fereastră nouă"
+                },
+                gallery: {
+                    title: "Galerie Foto"
+                },
+                contact: {
+                    title: "Contactați-ne",
+                    coords: "Coordonate",
+                    contacts_list: "Contacte",
+                    role_priest: "Preot"
+                },
+                clergy: {
+                   title: "Preoții Noștri",
+                   role: "Preot"
+                },
+                parish: {
+                    title: "Viața Parohială",
+                    subtitle: "O comunitate vie unită prin credință și împărtășire.",
+                    choir: { title: "Corala", desc: "Corul însoțește slujbele liturgice duminicale." },
+                    school: { title: "Școala Duminicală", desc: "Catehism și activități pentru copii după liturghie." },
+                    charity: { title: "Acțiuni Caritabile", desc: "Ajutor pentru persoanele aflate în dificultate și sprijin comunitar." }
+                },
+                presentation: {
+                    title: "Prezentarea Parohiei",
+                    link: "Deschideți într-o fereastră nouă"
+                },
+                biserica: {
+                    title: "Biserica",
+                    p1: "Biserica noastră este o comunitate de credință dedicată cultului ortodox, mărturisind tradiția vie a Apostolilor. Clădirea însăși este un loc de adunare, rugăciune și celebrare a sfintelor taine.",
+                    p2: "Arhitectura și iconografia parohiei noastre reflectă teologia ortodoxă: cerul pe pământ. Fiecare detaliu, de la iconostas la fresce, invită credincioșii să intre în Împărăția lui Dumnezeu."
+                },
+                ortodoxia: {
+                    title: "Ortodoxia",
+                    quote: "« Aceasta este credința Apostolilor, aceasta este credința Părinților, aceasta este credința Ortodocșilor, aceasta este credința care a întărit universul. »",
+                    intro: "Biserica Ortodoxă este Biserica întemeiată de Iisus Hristos și de apostolii Săi în ziua Cincizecimii. Ea a păstrat nealterată plinătatea credinței creștine de-a lungul secolelor.",
+                    spirituality: "Spiritualitate",
+                    spirituality_desc: "O viață de rugăciune liturgică și personală, postul și căutarea păcii interioare (isihasm).",
+                    sacraments: "Taine",
+                    sacraments_desc: "Viața în Hristos este hrănită de sfintele taine, în special Euharistia, centrul vieții Bisericii."
+                }
             },
             ka: {
-                title: "წმინდა ნიკოლოზის სამრევლო",
-                nav: { home: "მთავარი", presentation: "პრეზენტაცია", contact: "კონტაქტი" },
-                home: { title: "მოგესალმებით", text: "კეთილი იყოს თქვენი მობრძანება კლერმონ-ფერანის ეკლესიაში." },
-                contact: { title: "კონტაქტი", address: "43 rue Sainte Claire, 63000 Clermont Ferrand" }
+                title: "წმინდა ნიკოლოზის მართლმადიდებლური სამრევლო",
+                nav: {
+                    home: "მთავარი",
+                    presentation: "პრეზენტაცია",
+                    biserica: "ეკლესია",
+                    ortodoxia: "მართლმადიდებლობა",
+                    clergy: "სამღვდელოება",
+                    parish_life: "სამრევლო ცხოვრება",
+                    calendar: "კალენდარი და დღის წესრიგი",
+                    gallery: "გალერეა",
+                    contact: "კონტაქტი"
+                },
+                home: {
+                    hero_title: "კლერმონის მართლმადიდებლური ეკლესია (EORC)",
+                    peace: "მშვიდობა ყველას",
+                    welcome_title: "კეთილი იყოს თქვენი მობრძანება",
+                    welcome_text: "კეთილი იყოს თქვენი მობრძანება კლერმონ-ფერანის მართლმადიდებლური სამრევლოს ვებგვერდზე, რომელიც დასავლეთ და სამხრეთ ევროპის რუმინეთის მართლმადიდებლური მიტროპოლიის იურისდიქციაშია.",
+                    schedule_title: "განრიგი",
+                    schedule_text: "იხილეთ მომავალი ლიტურგიებისა და მწუხრის ლოცვების თარიღები და დრო.",
+                    schedule_btn: "სრული კალენდარი",
+                    quote: "ღმერთი სიყვარულია.",
+                    quote_ref: "(1 იოანე 4:8)"
+                },
+                calendar: {
+                    saints_title: "დღის წმინდანები",
+                    saints_text: "წმინდა მოწამენი ჰერმესი, ანგია და გაიოზი; წმინდა მოწამე ფილიპე.",
+                    source: "წყარო : Doxologia.ro",
+                    agenda_title: "სამრევლო დღის წესრიგი",
+                    col_date: "თარიღი",
+                    col_time: "დრო",
+                    col_event: "ღონისძიება",
+                    full_calendar_title: "სრული Google კალენდარი",
+                    open_new_window: "გახსენით კალენდარი ახალ ფანჯარაში"
+                },
+                gallery: {
+                    title: "ფოტო გალერეა"
+                },
+                contact: {
+                    title: "დაგვიკავშირდით",
+                    coords: "კოორდინატები",
+                    contacts_list: "კონტაქტები",
+                    role_priest: "მღვდელი"
+                },
+                clergy: {
+                   title: "ჩვენი მღვდლები",
+                   role: "მღვდელი"
+                },
+                parish: {
+                    title: "სამრევლო ცხოვრება",
+                    subtitle: "ცოცხალი საზოგადოება, გაერთიანებული რწმენითა და ზიარებით.",
+                    choir: { title: "გუნდი", desc: "გუნდი თან ახლავს კვირის საღვთო ლიტურგიებს." },
+                    school: { title: "საკვირაო სკოლა", desc: "კატეხიზმო და აქტივობები ბავშვებისთვის ლიტურგიის შემდეგ." },
+                    charity: { title: "საქველმოქმედო საქმიანობა", desc: "დახმარება გაჭირვებულთათვის და საზოგადოებრივი მხარდაჭერა." }
+                },
+                presentation: {
+                    title: "სამრევლოს პრეზენტაცია",
+                    link: "გახსენით ახალ ფანჯარაში"
+                },
+                biserica: {
+                    title: "ეკლესია",
+                    p1: "ჩვენი ეკლესია არის რწმენის საზოგადოება, რომელიც ეძღვნება მართლმადიდებლურ ღვთისმსახურებას და მოწმობს მოციქულთა ცოცხალ ტრადიციას. შენობა თავისთავად არის შეკრების, ლოცვისა და წმინდა საიდუმლოებების აღსრულების ადგილი.",
+                    p2: "ჩვენი სამრევლოს არქიტექტურა და იკონოგრაფია ასახავს მართლმადიდებლურ თეოლოგიას: ცა დედამიწაზე. თითოეული დეტალი, კანკელიდან ფრესკებამდე, მორწმუნეებს ღვთის სასუფეველში შესვლისკენ მოუწოდებს."
+                },
+                ortodoxia: {
+                    title: "მართლმადიდებლობა",
+                    quote: "« ეს არის მოციქულთა რწმენა, ეს არის მამათა რწმენა, ეს არის მართლმადიდებელთა რწმენა, ეს არის რწმენა, რომელმაც განამტკიცა სამყარო. »",
+                    intro: "მართლმადიდებლური ეკლესია არის ეკლესია, რომელიც დააარსეს იესო ქრისტემ და მისმა მოციქულებმა სულთმოფენობის დღეს. მან საუკუნეების მანძილზე უცვლელად შეინარჩუნა ქრისტიანული რწმენის სისავსე.",
+                    spirituality: "სულიერება",
+                    spirituality_desc: "ლიტურგიკული და პირადი ლოცვის ცხოვრება, მარხვა და შინაგანი მშვიდობის ძიება (ისიქაზმი).",
+                    sacraments: "საიდუმლოებები",
+                    sacraments_desc: "ქრისტესმიერი ცხოვრება საზრდოობს წმინდა საიდუმლოებებით, განსაკუთრებით ევქარისტიით, რომელიც ეკლესიის ცხოვრების ცენტრია."
+                }
             }
         };
 
+        const EVENTS = [
+            { date: "2024-05-25", time: "18:00", fr: "Vêpres", ro: "Vecernia", ka: "მწუხრის ლოცვა" },
+            { date: "2024-05-26", time: "10:00", fr: "Divine Liturgie", ro: "Sfânta Liturghie", ka: "საღმრთო ლიტურგია" },
+            { date: "2024-06-01", time: "18:00", fr: "Vêpres", ro: "Vecernia", ka: "მწუხრის ლოცვა" },
+            { date: "2024-06-02", time: "10:00", fr: "Divine Liturgie", ro: "Sfânta Liturghie", ka: "საღმრთო ლიტურგია" }
+        ];
+
+        const CONTACTS = [
+            { name: "Pr. Gérard REYNAUD", phone: "06 76 47 03 55" },
+            { name: "Ciprian POPA", phone: "06 18 12 15 69" },
+            { name: "Ioan SARBAN", phone: "06 01 23 43 22" }
+        ];
+
+        // --- ÉTAT ---
         let currentLang = 'fr';
         let activeTab = 'home';
+        let isMobileMenuOpen = false;
 
-        function toggleMobileMenu() {
-            const s = document.getElementById('sidebar');
-            const o = document.getElementById('mobile-overlay');
-            s.classList.toggle('-translate-x-full');
-            o.classList.toggle('hidden');
+        // --- FONCTIONS ---
+
+        function init() {
+            renderNavigation();
+            updateView();
         }
 
         function setLanguage(lang) {
             currentLang = lang;
-            updateUI();
+            
+            // Mise à jour visuelle des boutons langue
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if(btn.dataset.lang === lang) {
+                    btn.classList.remove('bg-white', 'text-stone-800', 'hover:bg-stone-50');
+                    btn.classList.add('bg-ortho-red', 'text-white', 'shadow-md', 'border-transparent');
+                    btn.classList.remove('border-stone-300');
+                } else {
+                    btn.classList.add('bg-white', 'text-stone-800', 'hover:bg-stone-50', 'border-stone-300');
+                    btn.classList.remove('bg-ortho-red', 'text-white', 'shadow-md', 'border-transparent');
+                }
+            });
+
+            // Mise à jour du titre sidebar et header mobile
+            document.getElementById('sidebar-title').textContent = DATA[lang].title;
+            document.getElementById('mobile-title').textContent = DATA[lang].title;
+
+            renderNavigation();
+            updateView();
         }
 
         function setTab(tab) {
+            if (activeTab === tab) return;
             activeTab = tab;
-            if (window.innerWidth < 768) toggleMobileMenu();
-            updateUI();
+            
+            // Fermer le menu mobile si ouvert
+            if (isMobileMenuOpen) toggleMobileMenu();
+
+            renderNavigation(); // Pour mettre à jour l'état actif
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            updateView();
         }
 
-        function updateUI() {
-            // Update Nav
-            const nav = document.getElementById('nav-container');
-            nav.innerHTML = Object.keys(DATA[currentLang].nav).map(key => `
-                <button onclick="setTab('${key}')" class="w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 ${activeTab === key ? 'bg-ortho-red text-white' : 'hover:bg-stone-700'}">
-                    <i data-lucide="${key === 'home' ? 'home' : key === 'contact' ? 'map-pin' : 'info'}" class="w-4"></i>
-                    ${DATA[currentLang].nav[key]}
-                </button>
-            `).join('');
-
-            // Update Content
-            const main = document.getElementById('main-content');
-            const langData = DATA[currentLang];
+        function toggleMobileMenu() {
+            isMobileMenuOpen = !isMobileMenuOpen;
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
             
-            if(activeTab === 'home') {
-                main.innerHTML = `<div class="animate-fade-in">
-                    <h2 class="text-3xl font-serif font-bold text-ortho-red">${langData.home.title}</h2>
-                    <p class="mt-4 text-stone-600">${langData.home.text}</p>
-                    <img src="https://images.unsplash.com/photo-1548625361-ec80d60c23b3?auto=format&fit=crop&w=800" class="mt-6 rounded-xl shadow-lg w-full h-64 object-cover">
-                </div>`;
-            } else if(activeTab === 'contact') {
-                main.innerHTML = `<div class="animate-fade-in">
-                    <h2 class="text-3xl font-serif font-bold">${langData.contact.title}</h2>
-                    <p class="mt-4">${langData.contact.address}</p>
-                    <div class="mt-6 aspect-video w-full">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2782.7831110051!2d3.0841!3d45.7821" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-                    </div>
-                </div>`;
+            if (isMobileMenuOpen) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
             } else {
-                main.innerHTML = `<div class="animate-fade-in"><h2 class="text-3xl font-serif font-bold">${langData.nav[activeTab]}</h2><p class="mt-4">Contenu en cours de rédaction...</p></div>`;
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        }
+
+        function renderNavigation() {
+            const navContainer = document.getElementById('nav-container');
+            const items = [
+                { id: 'home', icon: 'home' },
+                { id: 'presentation', icon: 'info' },
+                { id: 'biserica', icon: 'church' },
+                { id: 'ortodoxia', icon: 'book' },
+                { id: 'clergy', icon: 'users' },
+                { id: 'parish_life', icon: 'heart' },
+                { id: 'calendar', icon: 'calendar' },
+                { id: 'gallery', icon: 'image' },
+                { id: 'contact', icon: 'map-pin' }
+            ];
+
+            let html = '';
+            items.forEach(item => {
+                const isActive = activeTab === item.id;
+                // Improved Readability: Inactive items are now white and medium weight
+                const activeClass = isActive 
+                    ? 'bg-ortho-red text-white shadow-md shadow-ortho-red/40 font-bold' 
+                    : 'text-white font-medium hover:bg-stone-400/80 hover:text-white';
+                
+                html += `
+                <button onclick="setTab('${item.id}')" class="w-full flex items-center gap-3 px-4 py-3 text-left transition-all duration-300 rounded-lg group ${activeClass}">
+                    <span class="transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110'}">
+                        <i data-lucide="${item.icon}" width="20"></i>
+                    </span>
+                    <span class="text-sm tracking-wide">${DATA[currentLang].nav[item.id]}</span>
+                </button>
+                `;
+            });
+
+            navContainer.innerHTML = html;
+            lucide.createIcons();
+        }
+
+        function updateView() {
+            const container = document.getElementById('main-content');
+            let content = '';
+
+            // Animation fade out
+            container.classList.remove('animate-fade-in');
+            void container.offsetWidth; // Trigger reflow
+
+            switch (activeTab) {
+                case 'home': content = renderHome(); break;
+                case 'calendar': content = renderCalendar(); break;
+                case 'gallery': content = renderGallery(); break;
+                case 'contact': content = renderContact(); break;
+                case 'presentation': content = renderPresentation(); break;
+                case 'biserica': content = renderBiserica(); break;
+                case 'ortodoxia': content = renderOrtodoxia(); break;
+                case 'clergy': content = renderClergy(); break;
+                case 'parish_life': content = renderParishLife(); break;
+                default: content = renderHome();
             }
 
+            container.innerHTML = content;
+            container.classList.add('animate-fade-in');
             lucide.createIcons();
-            document.getElementById('sidebar-title').textContent = langData.title;
         }
 
-        // Init
-        window.onload = updateUI;
+        // --- RENDER FUNCTIONS (HTML Generators) ---
+
+        function renderHome() {
+            const t = DATA[currentLang].home;
+            // COMPACT CARDS & REDUCED PADDING
+            return `
+            <div class="space-y-8">
+                <!-- Hero - Reduced Height -->
+                <div class="relative w-full rounded-2xl overflow-hidden shadow-2xl group border border-slate-100">
+                    <div class="relative h-[250px] md:h-[350px]">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent z-10"></div>
+                        <img src="https://lh3.googleusercontent.com/d/1C3ElaDXuIxRvy29Z5QvA9ZRr1eQjGXR3" class="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" alt="Banner" onerror="this.src='https://images.unsplash.com/photo-1548625361-ec80d60c23b3?q=80&w=2070&auto=format&fit=crop'">
+                    </div>
+                    <div class="absolute inset-0 z-20 flex flex-col items-center justify-end pb-8 md:pb-12 px-6 text-center">
+                        <h2 class="font-serif text-xl md:text-4xl font-bold text-white mb-2 drop-shadow-lg tracking-tight leading-tight uppercase max-w-5xl">${t.hero_title}</h2>
+                        <p class="font-sans text-base md:text-lg text-slate-100 font-light max-w-2xl mx-auto leading-relaxed border-t border-slate-200/30 pt-3 mt-1">${t.peace}</p>
+                    </div>
+                </div>
+                
+                <!-- Welcome - Compact -->
+                <section class="bg-white px-6 py-12 rounded-3xl shadow-soft border border-slate-100 text-center relative overflow-hidden">
+                    <div class="max-w-4xl mx-auto space-y-4 relative z-10">
+                        <h3 class="font-serif text-2xl md:text-3xl text-ortho-red font-bold">${t.welcome_title}</h3>
+                        <div class="w-16 h-1 bg-ortho-gold mx-auto rounded-full"></div>
+                        <p class="text-slate-700 leading-relaxed text-base md:text-lg font-light">${t.welcome_text}</p>
+                    </div>
+                </section>
+
+                <!-- Cards Grid - Reduced to 2 columns for remaining 2 blocks -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    
+                    <!-- Calendar Card -->
+                    <div class="group bg-ortho-red text-white p-5 rounded-2xl shadow-xl shadow-ortho-red/20 relative overflow-hidden transition-all hover:-translate-y-1 cursor-pointer" onclick="setTab('calendar')">
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl"></div>
+                        <div class="relative z-10 h-full flex flex-col justify-between">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-serif text-xl font-bold">${t.schedule_title}</h4>
+                                <i data-lucide="clock" class="text-ortho-gold" width="24" height="24"></i>
+                            </div>
+                            <p class="text-white/90 mb-4 text-sm leading-tight">${t.schedule_text}</p>
+                            <div class="flex items-center gap-2 font-bold uppercase text-[10px] tracking-widest text-white/90 group-hover:text-white group-hover:gap-3 transition-all">
+                                <span>${t.schedule_btn}</span> <i data-lucide="arrow-right" width="12"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quote Card -->
+                    <div class="bg-stone-100 p-5 rounded-2xl shadow-inner border border-stone-200 flex flex-col justify-center items-center text-center relative transition-colors group">
+                         <div class="text-4xl text-stone-200 font-serif absolute top-2 left-4 select-none">“</div>
+                         <blockquote class="font-serif text-lg text-slate-800 italic max-w-md z-10 relative mt-1">
+                             <span class="relative">"${t.quote}"</span>
+                             <footer class="text-[10px] text-ortho-red font-sans mt-2 not-italic font-bold uppercase tracking-widest flex items-center justify-center gap-2">
+                               <span class="w-4 h-[1px] bg-slate-200"></span> ${t.quote_ref} <span class="w-4 h-[1px] bg-slate-200"></span>
+                             </footer>
+                         </blockquote>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderCalendar() {
+            const t = DATA[currentLang].calendar;
+            const googleEmbed = "https://calendar.google.com/calendar/embed?src=clermont%40mitropolia.eu&ctz=Europe%2FParis&showTitle=0&showPrint=0&showTabs=1&showCalendars=0";
+            
+            let rows = '';
+            EVENTS.forEach(ev => {
+                rows += `
+                <tr class="hover:bg-stone-50 transition-colors">
+                  <td class="p-3 font-medium text-stone-800">${ev.date}</td>
+                  <td class="p-3 text-ortho-red font-bold flex items-center gap-2"><i data-lucide="clock" width="14"></i> ${ev.time}</td>
+                  <td class="p-3 text-stone-600">${ev[currentLang]}</td>
+                </tr>`;
+            });
+
+            return `
+            <div class="space-y-6">
+                <!-- Saints - Compact -->
+                <section class="bg-white border-l-4 border-ortho-gold p-4 rounded-r-xl shadow-strong border-t border-b border-r border-stone-200">
+                    <h3 class="font-serif text-lg text-stone-800 mb-1 flex items-center gap-2"><span class="text-ortho-gold">✦</span> ${t.saints_title}</h3>
+                    <p class="text-stone-600 mb-2 italic text-sm">${t.saints_text}</p>
+                    <a href="https://doxologia.ro/calendar-ortodox" target="_blank" class="text-xs text-ortho-red hover:text-ortho-gold uppercase tracking-wide font-bold">${t.source}</a>
+                </section>
+
+                <!-- Agenda Table - Compact Padding -->
+                <section class="bg-white p-5 rounded-3xl shadow-strong border border-stone-200">
+                    <h2 class="font-serif text-xl text-ortho-red mb-4 flex items-center gap-2"><i data-lucide="calendar" class="text-ortho-red" width="20"></i> ${t.agenda_title}</h2>
+                    <div class="overflow-hidden rounded-lg border border-stone-200">
+                        <table class="w-full text-left border-collapse text-sm">
+                            <thead class="bg-stone-100 text-stone-600 uppercase text-xs tracking-wider font-semibold">
+                                <tr>
+                                    <th class="p-3 border-b border-stone-200">${t.col_date}</th>
+                                    <th class="p-3 border-b border-stone-200">${t.col_time}</th>
+                                    <th class="p-3 border-b border-stone-200">${t.col_event}</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-stone-100">${rows}</tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Google Calendar -->
+                <section class="bg-white p-5 rounded-3xl shadow-strong border border-stone-200">
+                    <h2 class="font-serif text-xl text-ortho-red mb-4">${t.full_calendar_title}</h2>
+                    <div class="w-full h-[600px] border border-stone-200 rounded-xl overflow-hidden bg-white shadow-inner">
+                        <iframe src="${googleEmbed}" style="border:0" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <a href="${googleEmbed}" target="_blank" class="inline-block px-6 py-2 bg-stone-100 text-stone-700 border border-stone-200 rounded-full text-xs font-medium hover:bg-stone-200 hover:text-ortho-red transition-colors">${t.open_new_window}</a>
+                    </div>
+                </section>
+            </div>`;
+        }
+
+        function renderGallery() {
+            // More images for Gallery
+            const images = [
+                "https://images.unsplash.com/photo-1548625361-ec80d60c23b3?auto=format&fit=crop&q=80&w=800",
+                "https://images.unsplash.com/photo-1548625361-ec80d60c23b3?auto=format&fit=crop&q=80&w=800", 
+                "https://images.unsplash.com/photo-1620108097042-4299b841703e?auto=format&fit=crop&q=80&w=800",
+                "https://images.unsplash.com/photo-1548544149-4835e62ee5b3?auto=format&fit=crop&q=80&w=800",
+                "https://images.unsplash.com/photo-1505568582260-29c874b71946?auto=format&fit=crop&q=80&w=800",
+                "https://images.unsplash.com/photo-1576662712957-9c79ae1280f8?auto=format&fit=crop&q=80&w=800",
+                "https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&q=80&w=800", 
+                "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&q=80&w=800",
+                "https://images.unsplash.com/photo-1507643179173-39db4f9356aa?auto=format&fit=crop&q=80&w=800", 
+                "https://images.unsplash.com/photo-1515003233195-58e388dc84f6?auto=format&fit=crop&q=80&w=800", 
+                "https://images.unsplash.com/photo-1560113889-130090f4889c?auto=format&fit=crop&q=80&w=800", 
+                "https://images.unsplash.com/photo-1601137024479-79883582490d?auto=format&fit=crop&q=80&w=800"
+            ];
+            
+            let imgsHtml = images.map(src => `
+                <div class="break-inside-avoid mb-6 rounded-2xl overflow-hidden shadow-md hover:shadow-xl border border-slate-100 transition-shadow duration-300 group relative">
+                    <img src="${src}" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-700 bg-stone-200" loading="lazy">
+                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                </div>
+            `).join('');
+
+            return `
+            <div class="space-y-8">
+                <h2 class="font-serif text-3xl text-ortho-red mb-8">${DATA[currentLang].gallery.title}</h2>
+                <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+                    ${imgsHtml}
+                </div>
+            </div>`;
+        }
+
+        function renderContact() {
+            const t = DATA[currentLang].contact;
+            let contactsHtml = CONTACTS.map(c => `
+                <li class="flex items-center justify-between p-2 hover:bg-slate-50 rounded transition-colors">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="user" class="text-slate-400" width="16"></i>
+                    <span class="font-medium text-slate-700">${c.name}</span>
+                  </div>
+                  <a href="tel:${c.phone.replace(/\s/g, '')}" class="text-ortho-red font-mono text-sm hover:text-ortho-gold">${c.phone}</a>
+                </li>
+            `).join('');
+
+            return `
+            <div class="space-y-6">
+                <h2 class="font-serif text-3xl text-ortho-red mb-8">${t.title}</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-3xl shadow-soft border border-slate-100">
+                            <h3 class="font-serif text-lg text-slate-800 mb-4 border-b border-slate-100 pb-2">${t.coords}</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-start gap-3"><i data-lucide="map-pin" class="text-ortho-red mt-1"></i> <p class="text-slate-600">43 rue Sainte Claire, 63000 Clermont Ferrand</p></div>
+                                <div class="flex items-center gap-3"><i data-lucide="phone" class="text-ortho-red"></i> <p class="text-slate-800 font-bold">04 73 37 01 55</p></div>
+                                <div class="flex items-center gap-3"><i data-lucide="mail" class="text-ortho-red"></i> <a href="mailto:clermont@mitropolia.eu" class="text-slate-600 hover:text-ortho-red">clermont@mitropolia.eu</a></div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-3xl shadow-soft border border-slate-100">
+                            <h3 class="font-serif text-lg text-slate-800 mb-4 border-b border-slate-100 pb-2">${t.contacts_list}</h3>
+                            <ul class="space-y-3">${contactsHtml}</ul>
+                        </div>
+                        <div class="flex gap-4">
+                            <a href="https://www.facebook.com/profile.php?id=100010328286013" target="_blank" class="flex-1 flex items-center justify-center gap-2 bg-[#1877F2] text-white p-3 rounded-xl hover:bg-[#1877F2]/80 shadow-md"><i data-lucide="facebook"></i> Facebook</a>
+                            <a href="https://www.youtube.com/channel/UCNFDSNht7I1Qj8et4efKehg" target="_blank" class="flex-1 flex items-center justify-center gap-2 bg-[#FF0000] text-white p-3 rounded-xl hover:bg-[#FF0000]/80 shadow-md"><i data-lucide="youtube"></i> YouTube</a>
+                        </div>
+                    </div>
+                    <div class="h-full min-h-[400px] bg-slate-100 rounded-3xl overflow-hidden shadow-soft border border-slate-200">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2782.809623832441!2d3.0833!3d45.7744!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47f71be000000001%3A0x0!2s43%20Rue%20Sainte-Claire%2C%2063000%20Clermont-Ferrand!5e0!3m2!1sen!2sfr!4v1620000000000!5m2!1sen!2sfr" width="100%" height="100%" style="border:0" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderPresentation() {
+            const t = DATA[currentLang].presentation;
+            const slideSrc = "https://docs.google.com/presentation/d/1K48KIBt_o8vZUa6LFGsXK9K3kNR8_LGaFHcCti-N4xM/embed?start=false&loop=false&delayms=5000";
+            return `
+            <div class="space-y-6">
+                <div class="bg-white p-6 rounded-3xl shadow-soft border border-slate-100">
+                    <h2 class="font-serif text-2xl text-ortho-red mb-6">${t.title}</h2>
+                    <div class="w-full aspect-video bg-slate-100 rounded-xl overflow-hidden shadow-lg border border-slate-200">
+                        <iframe src="${slideSrc}" frameborder="0" width="100%" height="100%" allowfullscreen="true" class="w-full h-full"></iframe>
+                    </div>
+                    <div class="mt-4 text-center text-sm text-slate-500">
+                        <a href="https://docs.google.com/presentation/d/1K48KIBt_o8vZUa6LFGsXK9K3kNR8_LGaFHcCti-N4xM/edit?usp=sharing" target="_blank" class="text-ortho-red hover:text-ortho-gold hover:underline">${t.link}</a>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderClergy() {
+            const t = DATA[currentLang].clergy;
+            let cards = CONTACTS.map(c => `
+                <div class="bg-slate-50 p-6 rounded-2xl text-center hover:bg-white hover:shadow-lg transition-all duration-300 border border-slate-200 hover:border-slate-300 group">
+                    <div class="w-24 h-24 mx-auto bg-white rounded-full flex items-center justify-center text-ortho-gold mb-4 group-hover:scale-110 transition-transform shadow-md border border-slate-100">
+                        <i data-lucide="user" width="40" height="40"></i>
+                    </div>
+                    <h3 class="font-serif text-lg font-bold text-slate-800 mb-2">${c.name}</h3>
+                    <p class="text-sm text-slate-500 uppercase tracking-wider mb-4">${t.role}</p>
+                    <a href="tel:${c.phone.replace(/\s/g, '')}" class="inline-block px-4 py-2 bg-white border border-slate-200 rounded-full text-ortho-red text-sm font-medium hover:bg-ortho-red hover:text-white transition-colors shadow-sm">${c.phone}</a>
+                </div>
+            `).join('');
+
+            return `
+            <div class="bg-white p-8 rounded-3xl shadow-soft border border-slate-100">
+                <h2 class="font-serif text-3xl text-ortho-red mb-8 text-center">${t.title}</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">${cards}</div>
+            </div>`;
+        }
+
+        function renderParishLife() {
+             const t = DATA[currentLang].parish;
+             const items = [
+                 { i: 'music', ...t.choir },
+                 { i: 'book-open', ...t.school },
+                 { i: 'heart', ...t.charity }
+             ];
+             
+             let grid = items.map(item => `
+                <div class="bg-white p-8 rounded-3xl shadow-soft border border-slate-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
+                    <div class="w-12 h-12 bg-slate-50 text-ortho-red rounded-xl flex items-center justify-center mb-6 border border-slate-100 group-hover:border-ortho-red/30 transition-colors">
+                        <i data-lucide="${item.i}" width="24"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold mb-3 text-slate-800">${item.title}</h3>
+                    <p class="text-slate-600 leading-relaxed">${item.desc}</p>
+                </div>
+             `).join('');
+
+             return `
+             <div class="space-y-8">
+                 <div class="text-center max-w-2xl mx-auto mb-12">
+                     <h2 class="font-serif text-3xl text-ortho-red mb-4">${t.title}</h2>
+                     <p class="text-slate-600">${t.subtitle}</p>
+                 </div>
+                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">${grid}</div>
+             </div>`;
+        }
+
+        function renderBiserica() {
+            const t = DATA[currentLang].biserica;
+            return `
+            <div class="bg-white p-8 rounded-3xl shadow-soft border border-slate-100">
+                <h2 class="font-serif text-3xl text-ortho-red mb-6">${t.title}</h2>
+                <div class="prose prose-slate max-w-none text-slate-700 leading-relaxed">
+                    <p class="mb-6">${t.p1}</p>
+                    <div class="my-8 h-64 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 italic border border-slate-200">
+                         <i data-lucide="image" class="mr-2"></i> Image Intérieur
+                    </div>
+                    <p>${t.p2}</p>
+                </div>
+            </div>`;
+        }
+
+        function renderOrtodoxia() {
+            const t = DATA[currentLang].ortodoxia;
+            return `
+            <div class="bg-white p-8 rounded-3xl shadow-soft border border-slate-100">
+                <h2 class="font-serif text-3xl text-ortho-red mb-6">${t.title}</h2>
+                <div class="prose prose-slate max-w-none text-slate-700 leading-relaxed">
+                    <p class="font-serif text-xl italic text-slate-500 border-l-4 border-ortho-gold pl-4 mb-6">${t.quote}</p>
+                    <p>${t.intro}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                           <h3 class="font-bold text-lg mb-2 text-ortho-red">${t.spirituality}</h3>
+                           <p class="text-sm">${t.spirituality_desc}</p>
+                        </div>
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                           <h3 class="font-bold text-lg mb-2 text-ortho-red">${t.sacraments}</h3>
+                           <p class="text-sm">${t.sacraments_desc}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        // Init App
+        init();
+
     </script>
+<script type="module" src="/index.tsx"></script>
 </body>
 </html>
