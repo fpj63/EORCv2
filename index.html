@@ -353,39 +353,41 @@
 
             renderClergy() {
                 const t = DATA[this.lang].clergy;
-                // Separation des prêtres et des autres (Ioan SARBAN)
                 const priests = CONTACTS.filter(c => !c.excludeFromClergy);
                 const others = CONTACTS.filter(c => c.excludeFromClergy);
                 
                 const renderCard = (c) => `
-                    <div class="bg-slate-50 p-6 rounded-2xl text-center hover:bg-white hover:shadow-lg transition-all duration-300 border border-slate-200 hover:border-slate-300 group">
-                        <div class="w-24 h-24 mx-auto bg-white rounded-full flex items-center justify-center text-ortho-gold mb-4 group-hover:scale-110 transition-transform shadow-md border border-slate-100">
+                    <div class="bg-slate-50 p-6 rounded-2xl text-center hover:bg-white hover:shadow-lg transition-all duration-300 border border-slate-200 hover:border-slate-300 group flex flex-col h-full">
+                        <div class="w-24 h-24 mx-auto bg-white rounded-full flex items-center justify-center text-ortho-gold mb-4 group-hover:scale-110 transition-transform shadow-md border border-slate-100 shrink-0">
                             ${this.getIcon('user', 40)}
                         </div>
                         <h3 class="font-serif text-lg font-bold text-slate-800 mb-2">${c.name}</h3>
-                        ${!c.hideRole ? `<p class="text-sm text-slate-500 uppercase tracking-wider mb-4">${t.role}</p>` : ''}
-                        <a href="tel:${c.phone.replace(/\s/g, '')}" class="inline-block px-4 py-2 bg-white border border-slate-200 rounded-full text-ortho-red text-sm font-medium hover:bg-ortho-red hover:text-white transition-colors shadow-sm">${c.phone}</a>
+                        ${!c.hideRole ? `<p class="text-sm text-slate-500 uppercase tracking-wider mb-4 flex-grow-0">${t.role}</p>` : '<div class="mb-4 h-5"></div>'}
+                         <div class="flex-grow"></div>
+                        <a href="tel:${c.phone.replace(/\s/g, '')}" class="inline-block px-4 py-2 bg-white border border-slate-200 rounded-full text-ortho-red text-sm font-medium hover:bg-ortho-red hover:text-white transition-colors shadow-sm mt-auto">${c.phone}</a>
                     </div>
                 `;
 
                 return `
-                    <div class="bg-white p-8 rounded-3xl shadow-soft border border-slate-100 animate-fade-in space-y-12">
-                        <!-- Bloc Prêtres -->
-                        <div>
-                            <h2 class="font-serif text-3xl text-ortho-red mb-8 text-center">${t.title}</h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center">
-                                ${priests.map(renderCard).join('')}
+                    <div class="bg-white p-8 rounded-3xl shadow-soft border border-slate-100 animate-fade-in">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <!-- Bloc Prêtres (2/3 largeur sur grand écran) -->
+                            <div class="md:col-span-2 flex flex-col">
+                                <h2 class="font-serif text-3xl text-ortho-red mb-8 text-center">${t.title}</h2>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow">
+                                    ${priests.map(renderCard).join('')}
+                                </div>
                             </div>
-                        </div>
-                        
-                        <!-- Bloc Autres (Ioan) séparé -->
-                        ${others.length > 0 ? `
-                            <div class="border-t border-slate-100 pt-8">
-                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center">
+                            
+                            <!-- Bloc Autres (1/3 largeur sur grand écran) -->
+                            <div class="md:col-span-1 flex flex-col">
+                                <!-- Titre invisible pour l'alignement vertical sur Desktop -->
+                                <h2 class="font-serif text-3xl text-transparent mb-8 text-center hidden md:block select-none" aria-hidden="true">-</h2>
+                                <div class="grid grid-cols-1 gap-6 flex-grow">
                                     ${others.map(renderCard).join('')}
                                 </div>
                             </div>
-                        ` : ''}
+                        </div>
                     </div>
                 `;
             },
